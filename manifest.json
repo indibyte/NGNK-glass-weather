@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "ngnk.glass-weather",
+  "name": "Glass Weather",
+  "version": "1.0.0",
+  "author": "Jesse",
+  "description": "A frosted-glass weather widget that follows the theme",
+  "kinds": [
+    "panel"
+  ],
+  "entryPoints": {
+    "panel": "GlassWeather.qml"
+  },
+  "keepLoaded": true
+}
