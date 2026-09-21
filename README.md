@@ -1,6 +1,7 @@
 # Glass Weather
+
 <p align="center">
-  <img src="NGNK_logo1.jpg" alt="NGNK logo" width="128">
+  <img src="NGNK_logo1.jpg" alt="NGNK logo" width="220">
 </p>
 
 A frosted-glass weather widget for [Omarchy](https://omarchy.org), styled to
