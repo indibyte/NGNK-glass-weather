@@ -1,4 +1,7 @@
 # Glass Weather
+<p align="center">
+  <img src="NGNK_logo1.jpg" alt="NGNK logo">
+</p>
 
 A frosted-glass weather widget for [Omarchy](https://omarchy.org), styled to
 match the [Glass Clock](https://github.com/indibyte/NGNK-glass-clock).
