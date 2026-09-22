@@ -7,7 +7,7 @@
 A frosted-glass weather widget for [Omarchy](https://omarchy.org), styled to
 match the [Glass Clock](https://github.com/indibyte/NGNK-glass-clock).
 
-![Glass Clock screenshot](screenshot.png)
+![Glass Weather screenshot](preview.png)
 
 Renders a translucent, blurred panel on the right edge of your primary display,
 stacked below the Glass Clock. Click the panel to search for a city; the widget
