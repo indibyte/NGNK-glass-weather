@@ -184,19 +184,19 @@ Item {
   }
 
   function geocodeCommand(query) {
-    return ["curl", "-fsS", "-m", "15",
+    return ["curl", "-fsS", "-m", "15", "--max-filesize", "262144",
       "https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(query)
       + "&count=1&language=en&format=json"]
   }
 
   function searchCommand(query) {
-    return ["curl", "-fsS", "-m", "15",
+    return ["curl", "-fsS", "-m", "15", "--max-filesize", "262144",
       "https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(query)
       + "&count=6&language=en&format=json"]
   }
 
   function weatherCommand() {
-    return ["curl", "-fsS", "-m", "15",
+    return ["curl", "-fsS", "-m", "15", "--max-filesize", "262144",
       "https://api.open-meteo.com/v1/forecast?latitude=" + root.latitude
       + "&longitude=" + root.longitude
       + "&temperature_unit=" + (root.tempUnit === "fahrenheit" ? "fahrenheit" : "celsius")
@@ -271,9 +271,10 @@ Item {
       root.latitude = Number(hit.latitude)
       root.longitude = Number(hit.longitude)
       root.tempUnit = root.fahrenheitCountry(String(hit.country_code || "")) ? "fahrenheit" : "celsius"
-      var place = String(hit.name || "")
-      var region = String(hit.admin1 || hit.country || "")
-      root.placeName = region.length > 0 && region !== place ? place + ", " + region : place
+      var place = String(hit.name || "").slice(0, 80)
+      var region = String(hit.admin1 || hit.country || "").slice(0, 80)
+      var joined = region.length > 0 && region !== place ? place + ", " + region : place
+      root.placeName = joined.slice(0, 160)
       root.fetchWeather()
     } catch (error) {
       root.placeName = ""
@@ -322,13 +323,15 @@ Item {
       var json = JSON.parse(raw || "{}")
       var hits = json.results || []
       root.candidates = hits.map(function(hit) {
-        var region = String(hit.admin1 || hit.country || "")
-        var display = region.length > 0 && region !== hit.name
-          ? String(hit.name) + ", " + region : String(hit.name || "")
+        var place = String(hit.name || "").slice(0, 80)
+        var region = String(hit.admin1 || hit.country || "").slice(0, 80)
+        var country = String(hit.country || "").slice(0, 60)
+        var display = region.length > 0 && region !== place
+          ? place + ", " + region : place
         return {
-          name: display,
+          name: display.slice(0, 160),
           region: region,
-          country: String(hit.country || ""),
+          country: country,
           countryCode: String(hit.country_code || ""),
           latitude: Number(hit.latitude),
           longitude: Number(hit.longitude)
@@ -524,6 +527,7 @@ Item {
         anchors.top: parent.top
         width: Math.min(implicitWidth, parent.width)
         elide: Text.ElideRight
+        textFormat: Text.PlainText
         text: {
           if (root.state === "idle") return "Click to set location"
           if (root.state === "loading" && root.placeName.length === 0) return "Locating..."
@@ -856,6 +860,7 @@ Item {
               anchors.leftMargin: root.padX
               anchors.rightMargin: root.padX
               elide: Text.ElideRight
+              textFormat: Text.PlainText
               text: {
                 var c = root.candidates[index]
                 return c ? c.name + (c.country ? " \u00B7 " + c.country : "") : ""
